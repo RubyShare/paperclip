@@ -1,12 +1,16 @@
 Paperclip
 =========
 
-[![Build Status](https://secure.travis-ci.org/thoughtbot/paperclip.svg?branch=master)](http://travis-ci.org/thoughtbot/paperclip) [![Dependency Status](https://gemnasium.com/thoughtbot/paperclip.svg?travis)](https://gemnasium.com/thoughtbot/paperclip) [![Code Climate](https://codeclimate.com/github/thoughtbot/paperclip.svg)](https://codeclimate.com/github/thoughtbot/paperclip) [![Inline docs](http://inch-ci.org/github/thoughtbot/paperclip.svg)](http://inch-ci.org/github/thoughtbot/paperclip) [![Security](https://hakiri.io/github/thoughtbot/paperclip/master.svg)](https://hakiri.io/github/thoughtbot/paperclip/master)
+[![Build Status](https://secure.travis-ci.org/thoughtbot/paperclip.svg?branch=master)](http://travis-ci.org/thoughtbot/paperclip)
+[![Dependency Status](https://gemnasium.com/thoughtbot/paperclip.svg?travis)](https://gemnasium.com/thoughtbot/paperclip)
+[![Code Climate](https://codeclimate.com/github/thoughtbot/paperclip.svg)](https://codeclimate.com/github/thoughtbot/paperclip)
+[![Inline docs](http://inch-ci.org/github/thoughtbot/paperclip.svg)](http://inch-ci.org/github/thoughtbot/paperclip)
+[![Security](https://hakiri.io/github/thoughtbot/paperclip/master.svg)](https://hakiri.io/github/thoughtbot/paperclip/master)
 
 - [Requirements](#requirements)
-  - [Ruby on Rails](#ruby-and-rails)
+  - [Ruby and Rails](#ruby-and-rails)
   - [Image Processor](#image-processor)
-  - [file](#file)
+  - [`file`](#file)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
   - [Models](#models)
@@ -18,19 +22,20 @@ Paperclip
   - [Deleting an Attachment](#deleting-an-attachment)
 - [Usage](#usage)
 - [Validations](#validations)
+- [Internationalization (I18n)](#internationalization-i18n)
 - [Security Validations](#security-validations)
 - [Defaults](#defaults)
 - [Migrations](#migrations-1)
-  - [Table Definition](#table-definition)
+  - [Add Attachment Column To A Table](#add-attachment-column-to-a-table)
   - [Schema Definition](#schema-definition)
-  - [Vintage Syntax](#vintage-syntax)
+  - [Vintage syntax](#vintage-syntax)
 - [Storage](#storage)
   - [Understanding Storage](#understanding-storage)
 - [Post Processing](#post-processing)
 - [Events](#events)
 - [URI Obfuscation](#uri-obfuscation)
-  - [MD5 Checksum / Fingerprint](#md5-checksum--fingerprint)
-  - [File Preservation for Soft-Delete](#file-preservation-for-soft-delete)
+- [MD5 Checksum / Fingerprint](#md5-checksum--fingerprint)
+- [File Preservation for Soft-Delete](#file-preservation-for-soft-delete)
 - [Custom Attachment Processors](#custom-attachment-processors)
 - [Dynamic Configuration](#dynamic-configuration)
   - [Dynamic Styles](#dynamic-styles)
@@ -42,7 +47,7 @@ Paperclip
 - [License](#license)
 - [About thoughtbot](#about-thoughtbot)
 
-Paperclip is intended as an easy file attachment library for Active Record. The
+Paperclip is intended as an easy file attachment library for ActiveRecord. The
 intent behind it was to keep setup as easy as possible and to treat files as
 much like other attributes as possible. This means they aren't saved to their
 final locations on disk, nor are they deleted if set to nil, until
@@ -54,10 +59,10 @@ packages). Attached files are saved to the filesystem and referenced in the
 browser by an easily understandable specification, which has sensible and
 useful defaults.
 
-See the documentation for `has_attached_file` in [`Paperclip::ClassMethods`](http://rubydoc.info/gems/paperclip/Paperclip/ClassMethods) for
+See the documentation for `has_attached_file` in [`Paperclip::ClassMethods`](http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods) for
 more detailed options.
 
-The complete [RDoc](http://rdoc.info/gems/paperclip) is online.
+The complete [RDoc](http://www.rubydoc.info/gems/paperclip) is online.
 
 ---
 
@@ -68,7 +73,7 @@ Requirements
 
 Paperclip now requires Ruby version **>= 2.0.0** and Rails version **3.2, >= 4.1** (Only if you're going to use Paperclip with Ruby on Rails.)
 
-If you're still on Ruby 1.8.7 or Ruby on Rails 2.3.x, you can still use Paperclip 2.7.x with your project. Also, everything in this README might not apply to your version of Paperclip, and you should read [the README for version 2.7](http://rubydoc.info/gems/paperclip/2.7.0) instead.
+If you're still on Ruby 1.8.7 or Ruby on Rails 2.3.x, you can still use Paperclip 2.7.x with your project. Also, everything in this README might not apply to your version of Paperclip, and you should read [the README for version 2.7](http://www.rubydoc.info/gems/paperclip/2.7.0) instead.
 
 ### Image Processor
 
@@ -94,14 +99,15 @@ If you are dealing with pdf uploads or running the test suite, you'll also need
 to install GhostScript. On Mac OS X, you can also install that using Homebrew:
 
     brew install gs
-    
-If you're on Ubuntu, you'll want to run the following with apt-get:
+
+If you're on Ubuntu (or any Debian base Linux distribution), you'll want to run
+the following with apt-get:
 
     sudo apt-get install imagemagick -y
 
 ### `file`
 
-The Unix [`file` command](http://en.wikipedia.org/wiki/File_(command)) is required for content-type checking.
+The Unix [`file` command](https://en.wikipedia.org/wiki/File_(command)) is required for content-type checking.
 This utility isn't available in Windows, but comes bundled with Ruby [Devkit](https://github.com/oneclick/rubyinstaller/wiki/Development-Kit),
 so Windows users must make sure that the devkit is installed and added to the system `PATH`.
 
@@ -150,21 +156,15 @@ Include the gem in your Gemfile:
 gem "paperclip", "~> 4.3"
 ```
 
-If you're still using Rails 2.3.x, you should do this instead:
-
-```ruby
-gem "paperclip", "~> 2.7"
-```
-
 Or, if you want to get the latest, you can get master from the main paperclip repository:
 
 ```ruby
-gem "paperclip", :git => "git://github.com/thoughtbot/paperclip.git"
+gem "paperclip", git: "git://github.com/thoughtbot/paperclip.git"
 ```
 
 If you're trying to use features that don't seem to be in the latest released gem, but are
 mentioned in this README, then you probably need to specify the master branch if you want to
-use them. This README is probably ahead of the latest released version, if you're reading it
+use them. This README is probably ahead of the latest released version if you're reading it
 on GitHub.
 
 For Non-Rails usage:
@@ -188,8 +188,8 @@ Quick Start
 ```ruby
 class User < ActiveRecord::Base
   attr_accessible :avatar
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
-  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 end
 ```
 
@@ -197,8 +197,8 @@ end
 
 ```ruby
 class User < ActiveRecord::Base
-  has_attached_file :avatar, :styles => { :medium => "300x300>", :thumb => "100x100>" }, :default_url => "/images/:style/missing.png"
-  validates_attachment_content_type :avatar, :content_type => /\Aimage\/.*\Z/
+  has_attached_file :avatar, styles: { medium: "300x300>", thumb: "100x100>" }, default_url: "/images/:style/missing.png"
+  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\Z/
 end
 ```
 
@@ -221,7 +221,7 @@ end
 ### Edit and New Views
 
 ```erb
-<%= form_for @user, :url => users_path, :html => { :multipart => true } do |form| %>
+<%= form_for @user, url: users_path, html: { multipart: true } do |form| %>
   <%= form.file_field :avatar %>
 <% end %>
 ```
@@ -298,7 +298,7 @@ You'll need to add `<attachment>_content_type` in case you want to use content t
 validation.
 
 More information about the options passed to `has_attached_file` is available in the
-documentation of [`Paperclip::ClassMethods`](http://rubydoc.info/gems/paperclip/Paperclip/ClassMethods).
+documentation of [`Paperclip::ClassMethods`](http://www.rubydoc.info/gems/paperclip/Paperclip/ClassMethods).
 
 Validations
 -----------
@@ -312,9 +312,9 @@ For validations, Paperclip introduces several validators to validate your attach
 Example Usage:
 
 ```ruby
-validates :avatar, :attachment_presence => true
-validates_with AttachmentPresenceValidator, :attributes => :avatar
-validates_with AttachmentSizeValidator, :attributes => :avatar, :less_than => 1.megabytes
+validates :avatar, attachment_presence: true
+validates_with AttachmentPresenceValidator, attributes: :avatar
+validates_with AttachmentSizeValidator, attributes: :avatar, less_than: 1.megabytes
 
 ```
 
@@ -333,9 +333,9 @@ validates_attachment_presence :avatar
 Lastly, you can also define multiple validations on a single attachment using `validates_attachment`:
 
 ```ruby
-validates_attachment :avatar, :presence => true,
-  :content_type => { :content_type => "image/jpeg" },
-  :size => { :in => 0..10.kilobytes }
+validates_attachment :avatar, presence: true,
+  content_type: { content_type: "image/jpeg" },
+  size: { in: 0..10.kilobytes }
 ```
 
 _NOTE: Post-processing will not even **start** if the attachment is not valid
@@ -393,13 +393,19 @@ image-y ones:
 
 ```ruby
 validates_attachment :avatar,
-  :content_type => { :content_type => ["image/jpeg", "image/gif", "image/png"] }
+  content_type: { content_type: ["image/jpeg", "image/gif", "image/png"] }
 ```
 
 `Paperclip::ContentTypeDetector` will attempt to match a file's extension to an
 inferred content_type, regardless of the actual contents of the file.
 
 ---
+
+Internationalization (I18n)
+---------------------------
+
+For using or adding locale files in different languages, check the project
+https://github.com/thoughtbot/paperclip-i18n.
 
 Security Validations
 ====================
@@ -417,9 +423,9 @@ do this.
 class ActiveRecord::Base
   has_attached_file :avatar
   # Validate content type
-  validates_attachment_content_type :avatar, :content_type => /\Aimage/
+  validates_attachment_content_type :avatar, content_type: /\Aimage/
   # Validate filename
-  validates_attachment_file_name :avatar, :matches => [/png\Z/, /jpe?g\Z/]
+  validates_attachment_file_name :avatar, matches: [/png\Z/, /jpe?g\Z/]
   # Explicitly do not validate
   do_not_validate_attachment_file_type :avatar
 end
@@ -462,7 +468,7 @@ module YourApp
   class Application < Rails::Application
     # Other code...
 
-    config.paperclip_defaults = {:storage => :fog, :fog_credentials => {:provider => "Local", :local_root => "#{Rails.root}/public"}, :fog_directory => "", :fog_host => "localhost"}
+    config.paperclip_defaults = { storage: :fog, fog_credentials: { provider: "Local", local_root: "#{Rails.root}/public"}, fog_directory: "", fog_host: "localhost"}
   end
 end
 ```
@@ -473,7 +479,7 @@ An example Rails initializer would look something like this:
 
 ```ruby
 Paperclip::Attachment.default_options[:storage] = :fog
-Paperclip::Attachment.default_options[:fog_credentials] = {:provider => "Local", :local_root => "#{Rails.root}/public"}
+Paperclip::Attachment.default_options[:fog_credentials] = { provider: "Local", local_root: "#{Rails.root}/public"}
 Paperclip::Attachment.default_options[:fog_directory] = ""
 Paperclip::Attachment.default_options[:fog_host] = "http://localhost:3000"
 ```
@@ -495,6 +501,7 @@ class CreateUsersWithAttachments < ActiveRecord::Migration
     create_table :users do |t|
       t.attachment :avatar
     end
+  end
 
   # This is assuming you are only using the users table for Paperclip attachment. Drop with care!
   def down
@@ -554,7 +561,7 @@ Storage
 Paperclip ships with 3 storage adapters:
 
 * File Storage
-* S3 Storage (via `aws-sdk`)
+* S3 Storage (via `aws-sdk` or `aws-sdk-v1`)
 * Fog Storage
 
 If you would like to use Paperclip with another storage, you can install these
@@ -568,7 +575,7 @@ gems along side with Paperclip:
 The files that are assigned as attachments are, by default, placed in the
 directory specified by the `:path` option to `has_attached_file`. By default, this
 location is `:rails_root/public/system/:class/:attachment/:id_partition/:style/:filename`.
-This location was chosen because on standard Capistrano deployments, the
+This location was chosen because, on standard Capistrano deployments, the
 `public/system` directory is symlinked to the app's shared directory, meaning it
 will survive between deployments. For example, using that `:path`, you may have a
 file at
@@ -582,12 +589,19 @@ You may also choose to store your files using Amazon's S3 service. To do so, inc
 the `aws-sdk` gem in your Gemfile:
 
 ```ruby
-gem 'aws-sdk', '~> 1.6'
+gem 'aws-sdk', '>= 2.0.0' # If using paperclip `master` (upcoming v5.0)
+```
+or
+```ruby
+gem 'aws-sdk-v1' # If using paperclip <= v4.3.1
 ```
 
 And then you can specify using S3 from `has_attached_file`.
 You can find more information about configuring and using S3 storage in
-[the `Paperclip::Storage::S3` documentation](http://rubydoc.info/gems/paperclip/Paperclip/Storage/S3).
+[the `Paperclip::Storage::S3` documentation](http://www.rubydoc.info/gems/paperclip/Paperclip/Storage/S3).
+
+_**NOTE**: If upgrading aws-sdk from v1.x to v2.x, be sure to read the
+[UPGRADING guide](https://github.com/thoughtbot/paperclip/blob/master/UPGRADING)._
 
 Files on the local filesystem (and in the Rails app's public directory) will be
 available to the internet at large. If you require access control, it's
@@ -612,20 +626,20 @@ processors. You can specify a processor with the `:processors` option to
 `has_attached_file`:
 
 ```ruby
-has_attached_file :scan, :styles => { :text => { :quality => :better } },
-                         :processors => [:ocr]
+has_attached_file :scan, styles: { text: { quality: :better } },
+                         processors: [:ocr]
 ```
 
 This would load the hypothetical class Paperclip::Ocr, which would have the
-hash "{ :quality => :better }" passed to it along with the uploaded file. For
+hash "{ quality: :better }" passed to it along with the uploaded file. For
 more information about defining processors, see Paperclip::Processor.
 
-The default processor is Paperclip::Thumbnail. For backwards compatibility
+The default processor is Paperclip::Thumbnail. For backward compatibility
 reasons, you can pass a single geometry string or an array containing a
 geometry and a format that the file will be converted to, like so:
 
 ```ruby
-has_attached_file :avatar, :styles => { :thumb => ["32x32#", :png] }
+has_attached_file :avatar, styles: { thumb: ["32x32#", :png] }
 ```
 
 This will convert the "thumb" style to a 32x32 square in PNG format, regardless
@@ -640,12 +654,12 @@ receive the same parameters, which are defined in the `:styles` hash.
 For example, assuming we had this definition:
 
 ```ruby
-has_attached_file :scan, :styles => { :text => { :quality => :better } },
-                         :processors => [:rotator, :ocr]
+has_attached_file :scan, styles: { text: { quality: :better } },
+                         processors: [:rotator, :ocr]
 ```
 
 then both the :rotator processor and the :ocr processor would receive the
-options `{ :quality => :better }`. This parameter may not mean anything to one
+options `{ quality: :better }`. This parameter may not mean anything to one
 or more or the processors, and they are expected to ignore it.
 
 _NOTE: Because processors operate by turning the original attachment into the
@@ -701,8 +715,8 @@ Example Usage:
 
 ```ruby
 has_attached_file :avatar, {
-    :url => "/system/:hash.:extension",
-    :hash_secret => "longSecretString"
+    url: "/system/:hash.:extension",
+    hash_secret: "longSecretString"
 }
 ```
 
@@ -740,7 +754,7 @@ An option is available to preserve attachments in order to play nicely with soft
 
 ```ruby
 has_attached_file :some_attachment, {
-    :preserve_files => "true",
+    preserve_files: "true",
 }
 ```
 
@@ -788,7 +802,7 @@ look as follows where a boss will receive a `300x300` thumbnail otherwise a
 
 ```ruby
 class User < ActiveRecord::Base
-  has_attached_file :avatar, :styles => lambda { |attachment| { :thumb => (attachment.instance.boss? ? "300x300>" : "100x100>") } }
+  has_attached_file :avatar, styles: lambda { |attachment| { thumb: (attachment.instance.boss? ? "300x300>" : "100x100>") } }
 end
 ```
 
@@ -805,7 +819,7 @@ processors, where a defined `watermark` processor is invoked after the
 
 ```ruby
 class User < ActiveRecord::Base
-  has_attached_file :avatar, :processors => lambda { |instance| instance.processors }
+  has_attached_file :avatar, processors: lambda { |instance| instance.processors }
   attr_accessor :processors
 end
 ```
@@ -815,7 +829,7 @@ end
 Logging
 ----------
 
-By default Paperclip outputs logging according to your logger level. If you want to disable logging (e.g. during testing) add this in to your environment's configuration:
+By default, Paperclip outputs logging according to your logger level. If you want to disable logging (e.g. during testing) add this into your environment's configuration:
 ```ruby
 Your::Application.configure do
 ...
@@ -824,7 +838,7 @@ Your::Application.configure do
 end
 ```
 
-More information in the [rdocs](http://rdoc.info/github/thoughtbot/paperclip/Paperclip.options)
+More information in the [rdocs](http://www.rubydoc.info/github/thoughtbot/paperclip/Paperclip.options)
 
 ---
 
@@ -866,12 +880,12 @@ Paperclip about existing styles. Simply create a `paperclip_attachments.yml` fil
 
 ```ruby
 class User < ActiveRecord::Base
-  has_attached_file :avatar, :styles => {:thumb => 'x100', :croppable => '600x600>', :big => '1000x1000>'}
+  has_attached_file :avatar, styles: { thumb: 'x100', croppable: '600x600>', big: '1000x1000>' }
 end
 
 class Book < ActiveRecord::Base
-  has_attached_file :cover, :styles => {:small => 'x100', :large => '1000x1000>'}
-  has_attached_file :sample, :styles => {:thumb => 'x100'}
+  has_attached_file :cover, styles: { small: 'x100', large: '1000x1000>' }
+  has_attached_file :sample, styles: { thumb: 'x100' }
 end
 ```
 
@@ -898,7 +912,7 @@ Testing
 -------
 
 Paperclip provides rspec-compatible matchers for testing attachments. See the
-documentation on [Paperclip::Shoulda::Matchers](http://rubydoc.info/gems/paperclip/Paperclip/Shoulda/Matchers)
+documentation on [Paperclip::Shoulda::Matchers](http://www.rubydoc.info/gems/paperclip/Paperclip/Shoulda/Matchers)
 for more information.
 
 **Parallel Tests**
@@ -955,7 +969,7 @@ guidelines:
 
 Please see `CONTRIBUTING.md` for more details on contributing and running test.
 
-Thank you to all [the contributors](https://github.com/thoughtbot/paperclip/contributors)!
+Thank you to all [the contributors](https://github.com/thoughtbot/paperclip/graphs/contributors)!
 
 License
 -------
